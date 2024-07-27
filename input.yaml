@@ -1,0 +1,374 @@
+units:
+  c: 16.5
+  sw: 13.8
+  $default_spread: 17.5
+  $default_padding: 17.5
+  $default_height: 16.5
+  $default_width: 16.5
+  initial_rotate: 4
+  thumb_side_keys_rotation: 15
+  thumb_side_keys_additional_spread: 1
+  prototype_plate_key_size: 15.2
+  padd: 3
+points:
+  zones:
+    matrix:
+      anchor:
+        rotate: 0
+        # Fix placement on KiCAD sheet.
+        shift: [100, -100]
+      columns:
+        inner:
+          key.splay: initial_rotate
+          rows:
+            bottom:
+              column_net: P15
+            home:
+              column_net: P5
+            top:
+              column_net: P1
+              mirror.column_net: P21
+        index:
+          key.splay: -1.7
+          key.stagger: 2.7
+          key.spread: 18
+          rows:
+            bottom:
+              column_net: P18
+            home:
+              column_net: P6
+            top:
+              column_net: P0
+        middle:
+          key.splay: -4.5
+          key.stagger: 4
+          key.spread: 18.1
+          rows:
+            bottom:
+              column_net: P19
+            home:
+              column_net: P7
+            top:
+              column_net: P2
+        ring:
+          key.splay: -9.7
+          key.stagger: -6
+          key.spread: 18.2
+          rows:
+            bottom:
+              column_net: P20
+            home:
+              column_net: P8
+            top:
+              column_net: P3
+        pinky:
+          key.splay: -4.3
+          key.stagger: -5.5
+          key.spread: 20.8
+          rows:
+            bottom:
+              column_net: P21
+            home:
+              column_net: P9
+            top:
+              column_net: P4
+    
+    thumbfan:
+      anchor:
+        ref: matrix_inner_bottom
+        shift: [0.3, -19.8]
+        rotate: -initial_rotate + 17
+      columns:
+        home:
+          key.rotate: 0
+          rows:
+            thumb:
+              column_net: P16
+        far:
+          key.rotate: thumb_side_keys_rotation
+          key.spread: -$default_spread - thumb_side_keys_additional_spread
+          key.stagger: -4
+          rows:
+            thumb:
+              column_net: P10
+        near:
+          key.rotate: -thumb_side_keys_rotation
+          key.spread: 2 * ($default_spread + thumb_side_keys_additional_spread)
+          rows:
+            thumb:
+              column_net: P14
+
+  rotate: 0
+
+outlines:
+  keys:
+    - what: rectangle
+      where: true
+      bound: false
+      asym: both
+      size: [c, c]
+      corner: 0
+  switches:
+    - what: rectangle
+      where: true
+      bound: false
+      asym: both
+      size: [13.8, 13.8]
+      corner: 0
+  main_keys_outline:
+    - what: outline
+      name: switches
+      expand: padd
+      fillet: 5
+  mcu_polygon_bigger:
+    - what: polygon
+      points:
+        - ref: matrix_inner_top
+          shift: [-sw/2-padd, 0]
+        - ref: matrix_inner_bottom
+          shift: [-sw/2-padd, 0]
+        - ref: matrix_inner_bottom
+          shift: [-c/2-1.5c+10, -c/2-20]
+        - ref: matrix_inner_bottom
+          shift: [-c/2-1.5c+1, -c/2-20]
+        - ref: matrix_inner_top
+          shift: [-c/2-1.5c+1, 0]
+  mcu_polygon_smaller:
+    - what: polygon
+      points:
+        - ref: matrix_inner_top
+          shift: [-sw/2-padd, 0]
+        - ref: matrix_inner_bottom
+          shift: [-sw/2-padd, 0]
+        - ref: matrix_inner_bottom
+          shift: [-c/2-1.5c+10, -c/2-10]
+        - ref: matrix_inner_bottom
+          shift: [-c/2-1.5c+1, -c/2-10]
+        - ref: matrix_inner_top
+          shift: [-c/2-1.5c+1, 0]
+  mcu_polygon_negative:
+    - what: polygon
+      points:
+        - ref: matrix_inner_top
+          shift: [-(sw/2 + padd), sw/2]
+        - ref: matrix_inner_top
+          shift: [0, sw/2]
+        - ref: thumbfan_far_thumb
+          shift: [(sw/2 + padd), -(sw/2 + padd)]
+        - ref: thumbfan_far_thumb
+          shift: [-(sw/2 + padd), -(sw/2 + padd)]
+        - ref: thumbfan_far_thumb
+          shift: [-(sw/2 + padd), (sw/2 + padd+10)]
+        - ref: matrix_inner_top
+          shift: [-(sw/2 + padd), -(sw/2 + padd)]
+  mcu: [
+    mcu_polygon_bigger,
+    ~mcu_polygon_negative,
+  ]
+  outline_polygon:
+    - what: polygon
+      points:
+        - ref: matrix_inner_top
+          shift: [-(sw/2 + padd), sw/2]
+        - ref: matrix_inner_top
+          shift: [-sw/2, (sw/2 + padd)]
+        - ref: matrix_inner_top
+          shift: [(sw/2 + padd) + 5, (sw/2 + padd)]
+        - ref: matrix_index_top
+          shift: [-sw/2, (sw/2 + padd)]
+        - ref: matrix_index_top
+          shift: [(sw/2 + padd) + 7, (sw/2 + padd)]
+        - ref: matrix_middle_top
+          shift: [-sw/2, (sw/2 + padd)]
+        - ref: matrix_middle_top
+          shift: [sw/2, (sw/2 + padd)]
+        - ref: matrix_middle_top
+          shift: [sw/2 + padd, sw/2]
+        - ref: matrix_ring_top
+          shift: [-(sw/2 + padd)-11, (sw/2 + padd)]
+        - ref: matrix_ring_top
+          shift: [sw/2, (sw/2 + padd)]
+        - ref: matrix_ring_top
+          shift: [(sw/2 + padd), (sw/2)]
+        - ref: matrix_pinky_top
+          shift: [-(sw/2 + padd)-10, (sw/2 + padd)]
+        - ref: matrix_pinky_top
+          shift: [sw/2, (sw/2 + padd)]
+        - ref: matrix_pinky_top
+          shift: [(sw/2 + padd), (sw/2)]
+        - ref: matrix_pinky_bottom
+          shift: [(sw/2 + padd), -(sw/2)]
+        - ref: matrix_pinky_bottom
+          shift: [(sw/2), -(sw/2 + padd)]
+        - ref: matrix_pinky_bottom
+          shift: [-sw/2-36.2, -sw/2-padd]
+        - ref: thumbfan_near_thumb
+          shift: [(sw/2 + padd), -(sw/2)]
+        - ref: thumbfan_near_thumb
+          shift: [-(sw/2), -(sw/2 + padd)]
+        - ref: thumbfan_near_thumb
+          shift: [-(sw/2 + padd), -(sw/2 + padd)]
+        - ref: thumbfan_home_thumb
+          shift: [0, -(sw/2)]
+        - ref: thumbfan_far_thumb
+          shift: [(sw/2 + padd), -(sw/2 + padd)]
+        - ref: thumbfan_far_thumb
+          shift: [-(sw/2), -(sw/2 + padd)]
+        - ref: thumbfan_far_thumb
+          shift: [-(sw/2 + padd), -(sw/2)]
+        - ref: thumbfan_far_thumb
+          shift: [-(sw/2 + padd), (sw/2 + padd)]
+        - ref: matrix_inner_top
+          shift: [-(sw/2 + padd), -(sw/2 + padd)]
+  thumbs_circle:
+    - what: circle
+      radius: 60
+      where:
+        ref: thumbfan_home_thumb
+        shift: [0, -sw/2-padd-61.45]
+  thumbs_polygon:
+    - what: polygon
+      points:
+        - ref: thumbfan_far_thumb
+          shift: [0, 0]
+        - ref: thumbfan_near_thumb
+          shift: [0, 0]
+        - ref: thumbfan_near_thumb
+          shift: [0, -sw/2-10]
+        - ref: thumbfan_far_thumb
+          shift: [0, -sw/2-10]
+  thumbs_addition: [
+    +thumbs_polygon,
+    -thumbs_circle,
+  ]
+  pinky_circle:
+    - what: circle
+      radius: 60
+      where:
+        ref: matrix_pinky_bottom
+        shift: [0, -sw/2 - padd - 60]
+  pinky_polygon:
+    - what: polygon
+      points:
+        - ref: matrix_pinky_bottom
+          shift: [0, -(sw/2 + padd)]
+        - ref: matrix_pinky_bottom
+          shift: [-sw/2-36.2, -sw/2-padd]
+        - ref: thumbfan_near_thumb
+          shift: [(sw/2 + padd), -(sw/2)]
+  pinky_addition: [
+    +pinky_polygon,
+    -pinky_circle,
+  ]
+  debug_keys:
+    - what: outline
+      name: switches
+      expand: 0
+      fillet: 0
+  pcb_outline: [
+    +main_keys_outline,
+    +outline_polygon,
+    +mcu,
+    +mcu_polygon_smaller,
+    +thumbs_addition,
+    +pinky_addition,
+
+    # ^debug_keys,
+  ]
+  plate: [
+    +pcb_outline,
+    -switches,
+  ]
+  prototype_keys:
+    - what: rectangle
+      where: true
+      bound: false
+      asym: both
+      size: [prototype_plate_key_size, prototype_plate_key_size]
+      corner: 1
+  prototype_outline:
+    - what: outline
+      name: prototype_keys
+      expand: 6
+      fillet: 3
+  prototype_plate: [prototype_outline, -prototype_keys]
+
+pcbs:
+  pcb:
+    outlines:
+      main:
+        outline: pcb_outline
+    footprints:
+      choc_hotswap:
+        what: choc
+        where: true
+        params:
+          keycaps: false
+          reverse: true
+          hotswap: true
+          from: "{{column_net}}"
+          to: GND
+      mcu:
+        what: promicro
+        where:
+          ref: matrix_inner_top
+          shift: [-21, -18]
+          rotate: -90
+      battery:
+        what: jstph
+        where:
+          ref: matrix_inner_top
+          shift: [-21, -46]
+          rotate: 180
+        params:
+          pos: BAT
+          neg: GND
+          designator: 'BAT'
+      reset_button:
+        what: button_YD3414
+        where:
+          ref: matrix_inner_top
+          shift: [-32.8, -47.5]
+          rotate: 90
+        params:
+          from: RST
+          to: GND
+          designator: 'RST'
+      power_switcher:
+        what: switcher_MSK12C02
+        where:
+          ref: matrix_inner_top
+          shift: [-30.1, -38.5]
+          rotate: -90
+        params:
+          from: RAW
+          to: BAT
+          designator: 'SW'
+      mounting_hole_1:
+        what: mounting_hole
+        where:
+          ref: matrix_inner_top
+          shift: [9.78, -5.77]
+        params:
+          diam: 5.5
+      mounting_hole_2:
+        what: mounting_hole
+        where:
+          ref: matrix_inner_bottom
+          shift: [-11.72, -11.02]
+        params:
+          diam: 5.5
+      mounting_hole_3:
+        what: mounting_hole
+        where:
+          ref: matrix_pinky_top
+          shift: [-11.828, -3.937]
+        params:
+          diam: 5.5
+      mounting_hole_4:
+        what: mounting_hole
+        where:
+          ref: matrix_pinky_bottom
+          shift: [-10.373, -3.298]
+        params:
+          diam: 5.5

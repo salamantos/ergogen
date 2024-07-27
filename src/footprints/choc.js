@@ -73,12 +73,32 @@ module.exports = {
           `
       }
     }
+    function vias() {
+      if(p.hotswap) {
+        return `
+          (pad "" thru_hole circle (at -3.3 2.4) (size 0.8 0.8) (drill 0.4) (layers *.Cu *.Mask) ${p.from})
+        `
+        // return `
+        //   (pad "" thru_hole circle (at 0 -8.45) (size 0.8 0.8) (drill 0.4) (layers *.Cu *.Mask) ${p.from})
+        //   (fp_line (start 0 -8.45) (end 3 -6.45)
+        //     (stroke (width 0.25) (type default)) (layer "F.Cu")
+        //   )
+        //   (fp_line (start 0 -8.45) (end -3 -6.45)
+        //     (stroke (width 0.25) (type default)) (layer "B.Cu")
+        //   )
+      
+        // `
+      } else {
+          return ``
+      }
+    }
     if(p.reverse) {
       return `
         ${standard}
         ${p.keycaps ? keycap : ''}
         ${pins('-', '', 'B')}
-        ${pins('', '-', 'F')})
+        ${pins('', '-', 'F')}
+        ${vias()})
         `
     } else {
       return `
