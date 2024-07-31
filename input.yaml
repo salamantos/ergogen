@@ -275,9 +275,31 @@ outlines:
 
     # ^debug_keys,
   ]
+  mounting_holes:
+    - what: circle
+      radius: 5.5/2
+      where:
+        ref: matrix_inner_top
+        shift: [9.78, -5.77]
+    - what: circle
+      radius: 5.5/2
+      where:
+        ref: matrix_inner_bottom
+        shift: [-11.72, -11.02]
+    - what: circle
+      radius: 5.5/2
+      where:
+        ref: matrix_pinky_top
+        shift: [-11.828, -3.937]
+    - what: circle
+      radius: 5.5/2
+      where:
+        ref: matrix_pinky_bottom
+        shift: [-10.373, -3.298]
   plate: [
     +pcb_outline,
-    -switches,
+    -mounting_holes,
+    ^switches,
   ]
   prototype_keys:
     - what: rectangle
